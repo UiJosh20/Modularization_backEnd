@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
-const uri = process.env.URI 
+const uri = "mongodb+srv://adeyeriseun0:drAnonymous@cluster0.o9g7pm7.mongodb.net/student_db?retryWrites=true&w=majority" 
 mongoose.connect(uri)
 .then((response)=>{
   console.log("database has connected successfully!");
