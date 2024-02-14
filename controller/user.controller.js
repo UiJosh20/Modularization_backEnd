@@ -1,5 +1,12 @@
 const Student = require('../model/user.model');
 const bcrypt = require("bcrypt")
+const cloudinary = require('cloudinary');
+          
+cloudinary.config({ 
+  cloud_name: 'dubaep0qz', 
+  api_key: '257212389221118', 
+  api_secret: 'Pq6--RYn75xxzkNNFrdHaOTgWfM' 
+});
 
 const displayWelcome = (req,res) =>{
   res.send('Welcome to the homepage!');
@@ -32,29 +39,36 @@ const register = (req,res) =>{
 const login = (req, res) => {
   const { email, password } = req.body;
   
-  // Find the student with the given email
   Student.findOne({ email })
     .then(student => {
       if (!student) {
         console.log( "User not found" );
       }
 
-  // Compare the password with the hashed password in mongodb
       bcrypt.compare(password, student.password)
-        .then(match => {
+        .then((match) => {
           if (!match) {
             console.log("User not found");
           }else{
             console.log("Login successful" );
           }
         })
-        .catch(error => {
-          console.error(error)
+        .catch((err) => {
+          console.log(err)
         });
     })
-    .catch(error => {
-      console.error(error)
+    .catch((error) => {
+      console.log(error)
     });
 };
 
-module.exports = {displayWelcome,aboutUser, register, login}
+const upload = (req, res) =>{
+  console.log(req.body);
+  let image = req.body.myFile
+  cloudinary.uploader.upload(image,((result, err)=>{
+    let storedImage = result.secure_url;
+    res.send({message: "image uploaded successfully", status: true, storedImage})
+  }));
+}
+
+module.exports = {displayWelcome,aboutUser, register, login, upload}
