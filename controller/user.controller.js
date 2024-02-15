@@ -1,12 +1,8 @@
 const Student = require('../model/user.model');
 const bcrypt = require("bcrypt")
 const cloudinary = require('cloudinary');
-          
-cloudinary.config({ 
-  cloud_name: 'dubaep0qz', 
-  api_key: '257212389221118', 
-  api_secret: 'Pq6--RYn75xxzkNNFrdHaOTgWfM' 
-});
+require ("dotenv").config()         
+process.env.CLOUD
 
 const displayWelcome = (req,res) =>{
   res.send('Welcome to the homepage!');
@@ -31,6 +27,9 @@ const register = (req,res) =>{
   student.save()
   .then((user)=>{
     console.log("saved successfully");
+    res.send("Saved successfully")
+
+
   }).catch((err)=>{
     console.log(err);
   })
@@ -65,7 +64,8 @@ const login = (req, res) => {
 const upload = (req, res) =>{
   console.log(req.body);
   let image = req.body.myFile
-  cloudinary.uploader.upload(image,((result, err)=>{
+  cloudinary.uploader.upload(image, ((result, err)=>{
+    console.log(result);
     let storedImage = result.secure_url;
     res.send({message: "image uploaded successfully", status: true, storedImage})
   }));

@@ -1,11 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const userRouter = require('./routes/user.route');
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT;
 
-dotenv.config();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true, limit: "50mb"}));
